@@ -1,8 +1,10 @@
 package com.challenge.Palindrome;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Stack;
 
 /*
  * 
@@ -71,11 +73,56 @@ public class Solution {
 	}
 	
 	
+	public String generatePalindrome2(String s) {
+		Stack<Character> stack = new Stack<Character>();
+		
+		char[] arr = s.toCharArray();
+		Arrays.sort(arr);
+		int count = 1;
+		StringBuilder odd = new StringBuilder();
+		
+		stack.add(arr[0]);
+		for (int i = 1; i < arr.length; i++) {
+			if (arr[i] == stack.peek()) {
+				count++;
+				continue;
+			} else {
+				
+				if (count % 2 > 0) {
+					odd.append(stack.pop());
+					
+				} else  {
+					stack.add(arr[i]);
+					count = 0;
+				}
+			}
+		}
+		
+		if (stack.isEmpty() && odd.length() % 2 > 0) return odd.substring(0, 1);
+		
+		StringBuilder res = new StringBuilder();
+		for(Character c: stack) {
+			res.append(c);
+		}
+		if (odd.length() > 0) res.append(odd);
+		
+		while(!stack.isEmpty()) {
+			res.append(stack.pop());
+		}
+		
+		
+		return res.toString();
+	}
+	
+	
 	public static void main(String[] args) {
-		String s = "aabb";
+		String s = "aabbc";
 		
 		Solution solution = new Solution();
 		System.out.println(solution.generatePalindrome(s));
+		
+		System.out.println("------------------------[Solution 2]--------------------------------");
+		System.out.println(solution.generatePalindrome2(s));
 
 	}
 
